@@ -8,21 +8,22 @@ type alias HttpResult =
 
 
 type alias FlightData =
-    { status: String
-    , recordType: String
-    , origin: String
-    , id: String
-    , flightNumber: String
-    , airline: String
-    , estimatedArrivalTime: Int
-    , destination: String
-    , arrivalTime: Int
-    , departureTime: Int
-    , cancelled: Bool
-    , arrivalDelay: Int
+    { status : String
+    , recordType : String
+    , origin : String
+    , id : String
+    , ident : String
+    , flightNumber : String
+    , airline : String
+    , estimatedArrivalTime : Int
+    , destination : String
+    , arrivalTime : Int
+    , progress : Int
+    , departureTime : Int
+    , cancelled : Bool
+    , arrivalDelay : Int
     , aircraft : String
     }
-
 
 
 type alias Model =

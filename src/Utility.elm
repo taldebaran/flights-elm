@@ -1,8 +1,8 @@
 module Utility exposing (..)
 
 import Date
-import Time exposing (Time)
 import Dict exposing (Dict)
+import Time exposing (Time)
 
 
 durationFormat : Int -> String
@@ -26,10 +26,18 @@ durationFormat duration =
         upd =
             acc |> List.reverse |> String.join ":"
     in
-        if String.left 3 upd == "00:" then
-            String.right 5 upd
-        else
-            upd
+    if String.left 3 upd == "00:" then
+        String.right 5 upd
+    else
+        upd
+
+
+statusColor : String -> String
+statusColor status =
+    if status == "Delayed" then
+        "red"
+    else
+        "green"
 
 
 timeOfDay : Int -> String
@@ -38,9 +46,12 @@ timeOfDay millis =
         dd =
             Date.fromTime (toFloat millis)
     in
-        [ Date.hour dd, Date.minute dd, Date.second dd ]
+    String.append
+        ([ Date.hour dd, Date.minute dd ]
             |> List.map (\n -> n |> toString |> String.padLeft 2 '0')
             |> String.join ":"
+        )
+        " CST"
 
 
 getOrElse : Dict comparable b -> comparable -> b -> b

@@ -2,14 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <script src="scripts/flight-status.js"></script>
- <!-- MDL
-      The library relies on Google's Material Design fonts, icons, and the CSS of Google's Material Design Lite implementation. Load these as follows.  --> <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500|Roboto+Mono|Roboto+Condensed:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
- <!--
+    <script src="assets/scripts/flight-status.js"></script>
+      <!-- MDL
+      The library relies on Google's Material Design fonts, icons, and the CSS of Google's Material Design Lite implementation. Load these as follows.  -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500|Roboto+Mono|Roboto+Condensed:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.teal-red.min.css" />
-    -->
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="styles/main.css">
     <style >
       .mdl-data-table td, .mdl-data-table th {
         text-align: left;
@@ -19,26 +18,18 @@
   </head>
   <body>
     <script>
-      <!-- elm doesn't support sse natively, this is one possible solution -->
+      <!-- elm does not support sse natively, this is one possible solution -->
       var app = Elm.Main.fullscreen();
       send_port_msg = function(msg) {
         data = msg.data;
-        console.log(msg);
         app.ports.ssePortEvent.send(data);
       };
-      app.ports.ssePortRequest.subscribe(function(serverUrl) {
-        var es = new EventSource(serverUrl);
+      app.ports.ssePortRequest.subscribe(function(apiUrl) {
+        var es = new EventSource(apiUrl);
         es.addEventListener("flight.data", function(msg) {
             send_port_msg(msg);
         });
       });
-
     </script>
-    <script>
-      document.write('<script src="http://'
-    + (location.host || 'localhost').split(':')[0]
-    + ':35729/livereload.js"></'
-    + 'script>')
-      </script>
   </body>
 </html>
