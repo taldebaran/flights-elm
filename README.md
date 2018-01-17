@@ -4,7 +4,8 @@ Software Requirements:
 
 Setup
 - run "npm install"
-- run "elm install"
+- run "elm-package install"
+- run "elm make src/Main.elm --output=assets/scripts/flight-status.js"
 - start local server by running "elm-reactor --port=8000" to run on port 8000
 - navigate browser to "localhost:8000/index.html"
 
