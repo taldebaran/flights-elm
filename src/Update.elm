@@ -1,22 +1,24 @@
-module Update exposing (update, apiUrl)
+module Update exposing (apiUrl, update)
 
-import Dict exposing (Dict)
-import Json.Decode as Decode exposing (..)
 --import Json.Encode as Encode
-import Debug exposing (log)
 --import Http
 --import Material
-import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 --import Time as Time
 --import Http
-import Models exposing (..)
+
+import Debug exposing (log)
+import Dict exposing (Dict)
+import Json.Decode as Decode exposing (..)
+import Json.Decode.Pipeline exposing (decode, hardcoded, optional, required)
 import Messages exposing (..)
+import Models exposing (..)
 import Ports exposing (..)
 
 
 apiUrl : String
 apiUrl =
-    "http://flight-status.dev:5053/v1.0/events/sse/fa-status"
+    " http://34.225.216.131:5053/v1.0/events/sse/fa-status"
+
 
 faStatusDecoder : Decoder FlightData
 faStatusDecoder =
@@ -25,15 +27,17 @@ faStatusDecoder =
         |> required "record_type" string
         |> required "origin" string
         |> required "id" string
+        |> required "flight_ident" string
         |> required "flight_number" string
         |> required "airline" string
         |> required "estimated_arrival_time" int
         |> required "destination" string
         |> optional "arrival_time" int 0
+        |> optional "progress_percent" int 0
         |> optional "depature_time" int 0
         |> required "cancelled" bool
-        |> required "arrival_delay" int
-        |> required "aircraft" string
+        |> optional "arrival_delay" int 0
+        |> optional "aircraft" string ""
 
 
 updateFlightStatus : Model -> String -> Model
@@ -52,9 +56,10 @@ update msg model =
     case msg of
         Tick time ->
             ( model, Cmd.none )
-        InitApp ->
-            log ("Starting SSE REquest")
-            ( model, ssePortRequest apiUrl )
-        StatusEvent flightDataStr ->
-            (  (updateFlightStatus model flightDataStr), Cmd.none )
 
+        InitApp ->
+            log "Starting SSE REquest"
+                ( model, ssePortRequest apiUrl )
+
+        StatusEvent flightDataStr ->
+            ( updateFlightStatus model flightDataStr, Cmd.none )
